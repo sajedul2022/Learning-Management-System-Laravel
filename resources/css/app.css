@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+button.btn {
+    border: 1px solid gray;
+    padding: 5px;
+    margin: 5px;
+}
