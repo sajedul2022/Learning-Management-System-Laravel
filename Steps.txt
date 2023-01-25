@@ -238,3 +238,6 @@ class DatabaseSeeder extends Seeder{
         return $user;
     }
 }
+
+
+P#4: factory, Role based create multiuser
