@@ -21,7 +21,9 @@
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
 
-    <!-- Scripts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- styles -->
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -53,23 +55,19 @@
                 <!-- End of Topbar -->
 
 
-
-
-
                 <!-- Page Content -->
                 <main>
 
-                    <!-- Begin Page Content -->
-                    <div class="container-fluid">
-
-                        @yield('content')
-
-                    </div>
-
-
-                    {{ $slot }}
+                    {{-- {{ $slot }} --}}
 
                 </main>
+
+                <!-- Begin Page Content -->
+                <div class="container">
+
+                    @yield('content')
+
+                </div>
 
             </div>
             <!-- End of Main Content -->
