@@ -2,9 +2,8 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard') }}" >
-        {{-- <div class="sidebar-brand-icon rotate-n-15">
-            Admin
-        </div> --}}
+        <div class="sidebar-brand-icon ">
+        </div>
         <div class="sidebar-brand-text mx-3 sidebar-brand-icon"> Admin <sup></sup></div>
     </a>
 
@@ -16,6 +15,10 @@
         <a class="nav-link" href="{{ route('dashboard') }}" >
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
+        </a>
+        <a class="nav-link" href="{{ route('home') }}" >
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Website</span>
         </a>
 
     </li>
