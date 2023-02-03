@@ -25,7 +25,9 @@
                             @include('components.icons.eye')
                         </a>
 
-                        <form onsubmit="return confirm('Are you sure?');" wire:submit.prevent="leadDelete({{$lead->id}})">
+                        <form onsubmit="return confirm('Are you sure?');" wire:submit.prevent="leadDelete({{$lead->id}})" method="post" >
+                            @csrf
+                            @method('delete')
                             <button type="submit">
                                 @include('components.icons.trash')
                             </button>
