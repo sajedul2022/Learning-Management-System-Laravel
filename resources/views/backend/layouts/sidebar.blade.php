@@ -39,6 +39,17 @@
         </a>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ route('lead.index') }}" >
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Leads</span>
+        </a>
+
+        {{-- <x-nav-link :href="route('lead.index')" :active="request()->routeIs('lead.index')">
+            {{ __('Leads') }}
+        </x-nav-link> --}}
+    </li>
+
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link " href="#">
