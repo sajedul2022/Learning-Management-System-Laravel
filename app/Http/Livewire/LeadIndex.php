@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Lead;
 use Flasher\Prime\FlasherInterface;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class LeadIndex extends Component{
@@ -16,6 +17,16 @@ class LeadIndex extends Component{
     }
 
     public function leadDelete($id, FlasherInterface $flasher) {
+
+        // permission check
+        $user = Auth::user();
+        $check = $user->hasPermissionTo('lead-management');
+
+        if(!$check) {
+            flash()->addWarning('You are not authorized to access this page');
+            return redirect()->route('dashboard');
+        }
+
         $lead = Lead::findOrFail($id);
         $lead->delete();
 

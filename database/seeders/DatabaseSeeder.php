@@ -11,12 +11,14 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class DatabaseSeeder extends Seeder{
+class DatabaseSeeder extends Seeder
+{
 
-    public function run(){
+    public function run()
+    {
 
         $defaultPermissions = ['lead-management', 'create-admin'];
-        foreach($defaultPermissions as $permission) {
+        foreach ($defaultPermissions as $permission) {
             Permission::create(['name' => $permission]);
         }
 
@@ -40,11 +42,12 @@ class DatabaseSeeder extends Seeder{
         Curriculum::factory(10)->create();
     }
 
-    private function create_user_with_role($type, $name, $email){
+    private function create_user_with_role($type, $name, $email)
+    {
 
-         $role = Role::create([
-                'name'=> $type
-            ]);
+        $role = Role::create([
+            'name' => $type
+        ]);
 
         $user = User::create([
             'name' => $name,
@@ -53,9 +56,8 @@ class DatabaseSeeder extends Seeder{
         ]);
 
         if ($type == 'Super Admin') {
-
             $role->givePermissionTo(Permission::all());
-        }elseif($type == 'Leads') {
+        } elseif ($type == 'Leads') {
             $role->givePermissionTo('lead-management');
         }
 

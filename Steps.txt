@@ -298,6 +298,7 @@ php artisan migrate:fresh --seed
 
 
 2. Check other user hasPermissionTo()
+
 app\Http\Controllers\LeadController.php
 
 
@@ -327,3 +328,52 @@ resources\views\layouts\navigation.blade.php
 php artisan migrate:fresh --seed
 
 P# 06  User Role and permission: Super admin, Teacher, Leads
+
+
+            ================ Class -07 ======================
+
+1. create helper app\Helpers\helpers.php
+
+    <?php
+
+    use Illuminate\Support\Facades\Auth;
+
+    function permission_check($permission) {
+        if(!Auth::user()->hasPermissionTo($permission)) {
+            flash()->addWarning('You are not authorized to access this page');
+            return redirect()->back();
+        }
+    }
+
+2. composer.json
+
+     "autoload": {
+        "files": [
+            "app/Helpers/helpers.php"
+        ],
+    ]
+
+than cli: composer dump-autoload
+
+3. call the function with arguments  app\Http\Controllers\LeadController.php
+
+      //
+
+      $user = Auth::user();
+        $check = $user->hasPermissionTo('lead-management');
+
+        if(!$check) {
+            flash()->addWarning('You are not authorized to access this page');
+            return redirect()->route('dashboard');
+        }
+
+    //
+    Replace with:
+    permission_check('lead-management');
+
+
+4. Livewire edit
+    php artisan livewire:make LeadEdit
+
+
+P# 07 helpers create and Livewire: Leads edit,update
