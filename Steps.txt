@@ -360,7 +360,7 @@ than cli: composer dump-autoload
       //
 
       $user = Auth::user();
-        $check = $user->hasPermissionTo('lead-management');
+        $check = $user->hasPermissionTo('user-management');
 
         if(!$check) {
             flash()->addWarning('You are not authorized to access this page');
@@ -377,3 +377,41 @@ than cli: composer dump-autoload
 
 
 P# 07 helpers create and Livewire: Leads edit,update
+
+
+             ================ Class -08 ======================
+
+1. database\seeders\DatabaseSeeder.php
+     $defaultPermissions = ['lead-management', 'create-admin', 'user-management'];
+
+2. php artisan make:controller UserController --resource
+
+    $user = Auth::user();
+        $check = $user->hasPermissionTo('user-management');
+
+        if(!$check) {
+            flash()->addWarning('You are not authorized to access this page');
+            return redirect()->route('dashboard');
+        }
+
+    return view('user.index');
+
+
+3. create user folder and files index, edit
+and livewire files for user
+    php artisan livewire:make UserIndex
+
+
+4. web.php
+    Route::resource('user', UserController::class);
+    Route::resource('role', RoleController::class);
+
+5. navigation and sidebar
+
+    @can('user-management')
+                        <x-dropdown-link :href="route('user.index')">
+                            {{ __('Users') }}
+                        </x-dropdown-link>
+    @endcan
+
+    php artisan migrate:fresh --seed
