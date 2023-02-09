@@ -355,6 +355,11 @@ P# 06  User Role and permission: Super admin, Teacher, Leads
 
 than cli: composer dump-autoload
 
+composer dump-auto
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+
 3. call the function with arguments  app\Http\Controllers\LeadController.php
 
       //
@@ -384,7 +389,8 @@ P# 07 helpers create and Livewire: Leads edit,update
 1. database\seeders\DatabaseSeeder.php
      $defaultPermissions = ['lead-management', 'create-admin', 'user-management'];
 
-2. php artisan make:controller UserController --resource
+2.  php artisan make:controller UserController --resource
+
 
     $user = Auth::user();
         $check = $user->hasPermissionTo('user-management');
@@ -397,7 +403,7 @@ P# 07 helpers create and Livewire: Leads edit,update
     return view('user.index');
 
 
-3. create user folder and files index, edit
+3. create user folder and files index, edit, create
 and livewire files for user
     php artisan livewire:make UserIndex
 
@@ -414,4 +420,89 @@ and livewire files for user
                         </x-dropdown-link>
     @endcan
 
-    php artisan migrate:fresh --seed
+php artisan migrate:fresh --seed
+
+6. user create livewire
+    php artisan livewire:make UserCreate
+
+#role:
+
+7. php artisan make:controller RoleController --resource
+    set view file in index()
+     return view('user.role.index');
+
+8. Role create livewire
+    php artisan livewire:make RoleIndex
+    php artisan livewire:make RoleCreate
+    php artisan livewire:make RoleEdit
+
+9. set role index show all role
+app\Http\Livewire\RoleIndex.php
+
+    use Spatie\Permission\Models\Role as ModelsRole;
+
+   public function render()
+    {
+        $permissions = Permission::all();
+        return view('livewire.role-create', [
+            'permissions' => $permissions
+        ]);
+    }
+
+// create role
+
+        protected $rules = [
+        'name' => 'required|unique:roles,name',
+        'selectedPermissions' => 'required|array|min:1',
+    ];
+
+    public function formSubmit() {
+        $this->validate();
+
+        $role = Role::create(['name' => $this->name]);
+        $role->syncPermissions($this->selectedPermissions);
+
+
+        flash()->addSuccess('Role created successfully');
+        return redirect()->route('role.index');
+    }
+
+10. create user app\Http\Livewire\UserCreate.php
+
+    public $name;
+    public $email;
+    public $password;
+    public $role;
+
+
+    protected $rules = [
+        'name' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6',
+        'role' => 'required',
+    ];
+    public function render()
+    {
+        $roles = Role::all();
+        return view('livewire.user-create', [
+            'roles' => $roles
+        ]);
+    }
+
+    public function submitForm() {
+        $this->validate();
+
+        $user = User::create([
+            'name' => $this->name,
+            'email' => $this->email,
+            'password' => Hash::make($this->password),
+        ]);
+
+        $user->assignRole($this->role);
+
+        flash()->addSuccess('User created successfully');
+
+        return redirect()->route('user.index');
+    }
+
+#P 08  Create User with Role

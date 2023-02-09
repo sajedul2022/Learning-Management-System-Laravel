@@ -53,8 +53,8 @@
                         </x-dropdown-link>
 
                         @can('user-management')
-                            {{-- <x-dropdown-link :href="route('user.index')"> --}}
-                            <x-dropdown-link :href="route('dashboard')">
+                            <x-dropdown-link :href="route('user.index')">
+                            {{-- <x-dropdown-link :href="route('dashboard')"> --}}
                                 {{ __('Users') }}
                             </x-dropdown-link>
                         @endcan

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AudienceController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +13,7 @@ class AudienceController extends Controller
      */
     public function index()
     {
-        //
+        return view('user.role.index');
     }
 
     /**
@@ -23,7 +23,7 @@ class AudienceController extends Controller
      */
     public function create()
     {
-        //
+        return view('user.role.create');
     }
 
     /**
@@ -56,7 +56,7 @@ class AudienceController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('user.role.edit');
     }
 
     /**

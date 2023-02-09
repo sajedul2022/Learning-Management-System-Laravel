@@ -4,12 +4,12 @@
 
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Users') }}
+                {{ __('Add New User') }}
             </h2>
 
             <div class="flex items-center">
-                <a class="lms-btn mr-4" href="{{route('role.index')}}">Roles</a>
-                <a class="lms-btn" href="{{route('user.create')}}">Add new user</a>
+                {{-- <a class="lms-btn mr-4" href="">Roles</a> --}}
+                <a class="lms-btn" href="{{route('user.index')}}">Back</a>
             </div>
 
     </x-slot>
@@ -19,7 +19,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
-                    <livewire:user-index />
+                    <livewire:user-create />
 
 
                 </div>

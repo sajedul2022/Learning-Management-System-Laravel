@@ -17,7 +17,7 @@ class UserController extends Controller
         $user = Auth::user();
         $check = $user->hasPermissionTo('user-management');
 
-        if(!$check) {
+        if (!$check) {
             flash()->addWarning('You are not authorized to access this page');
             return redirect()->route('dashboard');
         }
@@ -35,7 +35,7 @@ class UserController extends Controller
         $user = Auth::user();
         $check = $user->hasPermissionTo('user-management');
 
-        if(!$check) {
+        if (!$check) {
             flash()->addWarning('You are not authorized to access this page');
             return redirect()->route('dashboard');
         }
@@ -62,7 +62,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-
+        //
     }
 
     /**
@@ -76,7 +76,7 @@ class UserController extends Controller
         $user = Auth::user();
         $check = $user->hasPermissionTo('user-management');
 
-        if(!$check) {
+        if (!$check) {
             flash()->addWarning('You are not authorized to access this page');
             return redirect()->route('dashboard');
         }
