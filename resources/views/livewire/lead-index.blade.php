@@ -17,15 +17,13 @@
                 <td class="border px-4 py-2 text-center">{{date('F j, Y', strtotime($lead->created_at))}}</td>
                 <td class="border px-4 py-2 text-center">
                     <div class="flex items-center justify-center">
-                        <a href="{{route('lead.edit', $lead->id)}}">
-                            @include('components.icons.edit')
-                        </a>
 
-                        <a class="px-2" href="{{route('lead.show', $lead->id)}}">
+                        <a class="mr-1" href="{{route('lead.edit', $lead->id)}}">
                             @include('components.icons.eye')
                         </a>
 
-                        <form onsubmit="return confirm('Are you sure?');" wire:submit.prevent="leadDelete({{$lead->id}})" method="post" >
+                        <form class="ml-1" onsubmit="return confirm('Are you sure?');" wire:submit.prevent="leadDelete({{$lead->id}})">
+
                             @csrf
                             @method('delete')
                             <button type="submit">

@@ -506,3 +506,217 @@ app\Http\Livewire\RoleIndex.php
     }
 
 #P 08  Create User with Role
+
+
+                ================ Class - 09 ======================
+
+Role And Permission||Multiple Role
+
+1.  php artisan make:controller AdmissionController
+    php artisan livewire:make Admission
+
+2. web.php
+    Route::get('/admission', [AdmissionController::class, 'admission'])->name('admission');
+
+3. Controllers\AdmissionController.php
+    public function admission() {
+        return view('admission');
+    }
+and view file create admission.blade.php
+
+4.  Navigation
+<x-nav-link :href="route('admission')" :active="request()->routeIs('admission')">
+                        {{ __('Admission') }}
+</x-nav-link>
+
+5. livewire admission controller
+
+     public $search;
+    public $leads = [];
+    public $lead_id;
+    public $course_id;
+    public $selectedCourse;
+
+    public function render()
+    {
+        $courses = Course::all();
+        return view('livewire.admission', [
+            'courses' => $courses
+        ]);
+    }
+
+    public function search() {
+        $this->leads = Lead::where('name', 'like', '%' . $this->search . '%')
+            ->orWhere('email', 'like', '%' . $this->search . '%')
+            ->orWhere('phone', 'like', '%' . $this->search . '%')
+            ->get();
+    }
+
+    public function courseSelected() {
+        $this->selectedCourse = Course::find($this->course_id);
+    }
+
+    public function admit() {
+        $lead = Lead::findOrFail($this->lead_id);
+        $user = User::create([
+            'name' => $lead->name,
+            'email' => $lead->email,
+            'password' => Str::random(8),
+        ]);
+
+        $lead->delete();
+
+        $invoice = Invoice::create([
+            'due_date' => now()->addDays(7),
+            'user_id' => $user->id,
+        ]);
+
+        InvoiceItem::create([
+            'name' => 'Course: ' . $this->selectedCourse->name,
+            'price' => $this->selectedCourse->price,
+            'quantity' => 1,
+            'invoice_id' => $invoice->id,
+        ]);
+
+
+        $this->selectedCourse = null;
+        $this->course_id = null;
+        $this->lead_id = null;
+        $this->search = null;
+        $this->leads = [];
+
+
+        flash()->addSuccess('Admission successful');
+    }
+
+6. course model, course table migation wwith price and DatabaseSeeder works
+
+                                        #model
+
+app\Models\Course.php
+
+    public function students() {
+        return $this->belongsToMany(User::class, 'course_student', 'course_id', 'user_id');
+    }
+
+app/Models/Invoice.php
+
+     protected $fillable = [
+        'due_date',
+        'paid_date',
+        'user_id',
+    ];
+
+app/Models/InvoiceItem.php
+
+    protected $fillable = [
+        'name',
+        'price',
+        'quantity',
+        'invoice_id',
+    ];
+
+                                #migation
+
+database/migrations/2023_01_03_025709_create_courses_table.php
+
+    Schema::create('courses', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('description');
+            $table->string('image');
+            $table->unsignedBigInteger('user_id');
+            $table->float('price')->default(0);
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        });
+
+
+        Schema::create('course_student', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('course_id');
+            $table->unsignedBigInteger('user_id');
+            $table->timestamps();
+
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        });
+
+
+database/migrations/2023_01_03_025909_create_invoices_table.php
+
+     $table->dateTime('paid_date')->nullable();
+
+
+                                # DatabaseSeeder
+
+database/seeders/DatabaseSeeder.php
+
+     $course = Course::create([
+            'name' => 'Laravel',
+            'description' => 'Laravel is a web application framework with expressive, elegant syntax. We’ve already laid the foundation — freeing you to create without sweating the small things.',
+            'image' => 'https://laravel.com/img/logomark.min.svg',
+            'user_id' => $teacher->id,
+            'price' => 500
+        ]);
+
+
+        php artisan migrate:fresh --seed
+
+
+
+7. invoice create app\Http\Livewire\Admission.php
+
+     $invoice = Invoice::create([
+            'due_date' => now()->addDays(7),
+            'user_id' => $user->id,
+        ]);
+
+        InvoiceItem::create([
+            'name' => 'Course: ' . $this->selectedCourse->name,
+            'price' => $this->selectedCourse->price,
+            'quantity' => 1,
+            'invoice_id' => $invoice->id,
+        ]);
+
+
+        $this->selectedCourse = null;
+        $this->course_id = null;
+        $this->lead_id = null;
+        $this->search = null;
+        $this->leads = [];
+
+
+        flash()->addSuccess('Admission successful');
+
+
+
+    php artisan migrate:fresh --seed
+
+
+8. RoleIndex  app\Http\Livewire\RoleIndex.php
+
+    public function roleDelete($id)
+    {
+        $role = Role::find($id);
+        $role->delete();
+
+        flash()->addSuccess('Role Deleted Successfully.');
+    }
+
+9. resources\views\livewire\lead-index.blade.php
+
+     <a class="mr-1" href="{{route('lead.edit', $lead->id)}}">
+                            @include('components.icons.eye')
+    </a>
+
+    <form class="ml-1" onsubmit="return confirm('Are you sure?');" wire:submit.prevent="leadDelete({{$lead->id}})">
+
+    //...
+
+    </form>
+
+P# 09 Admission students form Lead, invoice Create, Lead delete
+
+

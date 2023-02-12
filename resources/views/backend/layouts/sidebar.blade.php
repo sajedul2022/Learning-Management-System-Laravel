@@ -39,6 +39,17 @@
         </a>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ route('admission') }}" >
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Admission</span>
+        </a>
+
+        {{-- <x-nav-link :href="route('admission')" :active="request()->routeIs('admission')">
+            {{ __('Admission') }}
+        </x-nav-link> --}}
+    </li>
+
     @can('lead-management')
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('lead.index') }}" >

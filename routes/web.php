@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\ProductController;
@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('user', UserController::class);
     Route::resource('role', RoleController::class);
+
+    Route::get('/admission', [AdmissionController::class, 'admission'])->name('admission');
 
 });
 
